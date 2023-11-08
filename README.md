@@ -13,9 +13,9 @@ To start using the bot, follow these simple steps:
 The following are the available commands for the bot:
 - `/start hello`: Displays the current version of the bot.
 
-
 ## Usage
-1. Use the `/start hello` command to get information about the current version of the bot.
+1. Set the `TELE_TOKEN` environment variable with your Telegram bot token.
+2. Use the command `./kbot start` to start the project.
 
 ## Contributing
 If you want to contribute to this project or have any suggestions, please feel free to contact the bot developer.

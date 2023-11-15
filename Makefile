@@ -1,8 +1,21 @@
 APP=$(shell basename $(shell git remote get-url origin))
 REGISTRY=xl1ver
 VERSION=$(shell git describe --tags --abbrev=0)-$(shell git rev-parse --short HEAD)
-TARGETOS=linux
-TARGETARCH=amd64
+TARGETOS=linux #linux darwin windows
+TARGETARCH=amd64 #amd64 arm64 x86_64
+
+
+linux:
+	TARGETOS=linux TARGETARCH=amd64 build
+
+arm:
+	TARGETOS=linux TARGETARCH=arm build
+
+macos:
+	TARGETOS=windows TARGETARCH=amd64 build
+
+windows:
+	TARGETOS=windows TARGETARCH=amd64 build
 
 format: 
 	gofmt -s -w ./
@@ -18,6 +31,7 @@ test:
 
 clean:
 	rm -rf kbot
+	docker rmi ${REGISTRY}/${APP}:${VERSION}-${TARGETARCH}
 
 image: 
 	docker build . -t ${REGISTRY}/${APP}/${VERSION}-${TARGETARCH}
@@ -26,4 +40,4 @@ push:
 	docker push ${REGISTRY}/${APP}/${VERSION}-${TARGETARCH}
 
 build: format
-	CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=amd64 go build -v -o kbot -ldflags "-X="github.com/geranton93/kbot/cmd.appVersion=${VERSION}
+	CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} go build -v -o kbot -ldflags "-X="github.com/geranton93/kbot/cmd.appVersion=${VERSION}

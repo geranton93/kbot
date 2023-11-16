@@ -1,22 +1,10 @@
 APP=$(shell basename $(shell git remote get-url origin))
 REGISTRY=xl1ver
 VERSION=$(shell git describe --tags --abbrev=0)-$(shell git rev-parse --short HEAD)
-TARGETOS=linux #linux darwin windows
-TARGETARCH=amd64 #amd64 arm64 x86_64
+TARGETOS=linux darwin windows
+TARGETARCH=amd64 arm64 x86_64
 GCLOUD_REGISTRY=gcr.io
 GCLOUD_PROJECT=devops-course-405218
-
-linux:
-	TARGETOS=linux TARGETARCH=amd64 build
-
-arm:
-	TARGETOS=linux TARGETARCH=arm build
-
-macos:
-	TARGETOS=windows TARGETARCH=amd64 build
-
-windows:
-	TARGETOS=windows TARGETARCH=amd64 build
 
 format: 
 	gofmt -s -w ./
@@ -48,3 +36,10 @@ push-gcloud:
 
 build: format
 	CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} go build -v -o kbot -ldflags "-X="github.com/geranton93/kbot/cmd.appVersion=${VERSION}
+
+define build_template
+build-$(1)-$(2): format
+        CGO_ENABLED=0 GOOS=$(1) GOARCH=$(2) go build -v -o kbot -ldflags "-X="github.com/geranton93/kbot/cmd.appVersion=${VERSION}
+endef
+
+$(foreach os, $(TARGETOS), $(foreach arch, $(TARGETARCH), $(eval $(call build_template,$(os),$(arch)))))

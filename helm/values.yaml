@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: "xl1ver/kbot"
+  repository: "xl1ver"
   tag: "v1.0.3-7a70086"
   arch: amd64
 secret:

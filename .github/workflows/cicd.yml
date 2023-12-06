@@ -23,7 +23,8 @@ jobs:
         with:
           # username: ${{ secrets.DOCKERHUB_USERNAME }}
           # password: ${{ secrets.DOCKERHUB_TOKEN }}
-          username: ${{ secrets.GH_USERNAME }}
+          registry: ghcr.io
+          username: ${{ github.actor }}
           password: ${{ secrets.GH_DOCKER_TOKEN }}
       
       - name: Build & push

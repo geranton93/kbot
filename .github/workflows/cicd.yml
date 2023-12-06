@@ -5,6 +5,7 @@ on: push
 env:
   TARGETARCH: amd64
   TARGETOS: linux
+  REGISTRY: ghcr.io
 
 jobs: 
   ci:
@@ -25,13 +26,13 @@ jobs:
         with:
           # username: ${{ secrets.DOCKERHUB_USERNAME }}
           # password: ${{ secrets.DOCKERHUB_TOKEN }}
-          registry: REGISTRY=ghcr.io
+          registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GH_DOCKER_TOKEN }}
       
       - name: Build & push
         env: 
-          APP: REPOSITORY=${{ github.actor }}/kbot
+          APP: ${{ github.actor }}/kbot
         run: make image push
     
   cd:

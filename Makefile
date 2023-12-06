@@ -1,11 +1,13 @@
-APP=$(shell basename $(shell git remote get-url origin))
+DEFAULT_APP=$(shell basename $(shell git remote get-url origin))
 REGISTRY_DEFAULT=xl1ver
-REGISTRY ?= $(REGISTRY_DEFAULT)
 VERSION=$(shell git describe --tags --abbrev=0)-$(shell git rev-parse --short HEAD)
-TARGETOS=linux # darwin windows
-TARGETARCH=amd64 # arm64 x86_64
+TARGETOS=linux# darwin windows
+TARGETARCH=amd64# arm64 x86_64
 GCLOUD_REGISTRY=gcr.io
 GCLOUD_PROJECT=devops-course-405218
+
+REGISTRY ?= $(REGISTRY_DEFAULT)
+APP ?= $(DEFAULT_APP)
 
 format: 
 	gofmt -s -w ./
@@ -24,7 +26,7 @@ clean:
 	docker rmi ${REGISTRY}/${APP}:${VERSION}-${TARGETARCH}
 
 image: 
-	docker build . -t ${REGISTRY}/${APP}:${VERSION}-${TARGETARCH}
+	docker build . -t ${REGISTRY}/${APP}:${VERSION}-${TARGETOS}-${TARGETARCH}
 
 image-gcloud:
 	docker build . -t $(GCLOUD_REGISTRY)/$(GCLOUD_PROJECT)/${APP}:${VERSION}-${TARGETARCH}

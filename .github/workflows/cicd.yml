@@ -2,10 +2,12 @@ name: KBOT-CICD
 
 on: push
 
+env:
+  TARGETARCH: amd64
+  TARGETOS: linux
+
 jobs: 
   ci:
-    env:
-      TARGETARCH: amd64
     name: CI
     runs-on: ubuntu-latest
 
@@ -23,14 +25,13 @@ jobs:
         with:
           # username: ${{ secrets.DOCKERHUB_USERNAME }}
           # password: ${{ secrets.DOCKERHUB_TOKEN }}
-          registry: ghcr.io
+          registry: REGISTRY=ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GH_DOCKER_TOKEN }}
       
       - name: Build & push
         env: 
-          APP: "kbot"
-          REGISTRY: "ghcr.io/${{ github.actor }}"
+          APP: REPOSITORY=${{ github.actor }}/kbot
         run: make image push
     
   cd:
@@ -47,7 +48,7 @@ jobs:
 
     - uses: mikefarah/yq@master
       with:
-        cmd: yq -i '.image.tag=strenv(VERSION) | .image.arch=strenv(TARGETARCH)' helm/values.yaml
+        cmd: yq -i '.image.tag=strenv(VERSION) | .image.arch=strenv(TARGETARCH)' | .image.registry=strenv(REGISTRY)' | .image.repository=strenv(REPOSITORY)'| .image.os=strenv(TARGETOS)' helm/values.yaml
     - run: |
         git config user.name github-actions
         git config user.email github-actions@github.com

@@ -3,11 +3,10 @@
 # Declare variables to be passed into your templates.
 
 replicaCount: 1
-
 image:
   repository: "xl1ver"
-  tag: "v1.0.3-7a70086"
-  arch: amd64
+  tag: "v1.0.3-6ce6dde"
+  arch: ""
 secret:
   name: "kbot"
   env: "TELE_TOKEN"
@@ -15,4 +14,4 @@ secret:
 securityContext:
   privileged: true
 service:
-  port: 8080 
+  port: 8080

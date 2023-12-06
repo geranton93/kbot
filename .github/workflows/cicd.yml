@@ -30,7 +30,7 @@ jobs:
       - name: Build & push
         env: 
           APP: "kbot"
-          REGISTRY: ghcr.io/${{ github.actor }}
+          REGISTRY: "ghcr.io/${{ github.actor }}"
         run: make image push
     
   cd:

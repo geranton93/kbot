@@ -1,5 +1,6 @@
 APP=$(shell basename $(shell git remote get-url origin))
-REGISTRY=xl1ver
+REGISTRY_DEFAULT=xl1ver
+REGISTRY ?= $(REGISTRY_DEFAULT)
 VERSION=$(shell git describe --tags --abbrev=0)-$(shell git rev-parse --short HEAD)
 TARGETOS=linux # darwin windows
 TARGETARCH=amd64 # arm64 x86_64

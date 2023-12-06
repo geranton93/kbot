@@ -4,8 +4,8 @@
 
 replicaCount: 1
 image:
-  repository: ""
-  tag: "v1.0.3-0c1c928"
+  repository: "geranton93/kbot"
+  tag: "v1.0.3-e742743"
   arch: "amd64"
   registry: ghcr.io
   os: linux

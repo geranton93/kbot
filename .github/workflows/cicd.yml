@@ -6,6 +6,7 @@ env:
   TARGETARCH: amd64
   TARGETOS: linux
   REGISTRY: ghcr.io
+  REPOSITORY: ${{ github.actor }}/kbot
 
 jobs: 
   ci:
@@ -32,7 +33,7 @@ jobs:
       
       - name: Build & push
         env: 
-          APP: ${{ github.actor }}/kbot
+          APP: ${{ env.REPOSITORY }}
         run: make image push
     
   cd:
